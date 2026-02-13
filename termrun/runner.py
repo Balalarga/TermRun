@@ -28,10 +28,13 @@ def __make_runnable_func(func, title):
             raise Exception(
                 f"'{func.__name__}' parameter type missmatch should be: {invoke.Context} but is {param.annotation}")
 
+    if len(title) == 0:
+        title = func.__name__
+
     return RunnableFunctionInfo(func, title, module_path.relative_to(pwd).parent)
 
 
-def term_runnable(title, os_filter: str = None):
+def term_runnable(title="", os_filter: str = None):
     def decorator(func):
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
