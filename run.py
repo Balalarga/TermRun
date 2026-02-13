@@ -1,4 +1,5 @@
 import logging
+import os
 import pathlib
 from pprint import pformat
 import argparse
@@ -23,7 +24,7 @@ def main():
         default=pathlib.Path("termrun.log"),
     )
     args = parser.parse_args()
-    logging.basicConfig(filename=args.log_file, filemode="w")
+    logging.basicConfig(filename=args.log_file, level=logging.INFO, filemode="w")
 
     loaded_modules = termrun.load_all_modules_from(args.scripts_dir)
     logging.info(f"Loaded modules: \n{pformat(loaded_modules, indent=2)}")

@@ -1,5 +1,7 @@
+import logging
 import os
 from pathlib import Path
+from pprint import pformat
 from typing import List, Tuple
 
 import invoke
@@ -16,7 +18,7 @@ class BaseRunnerMenuFsm:
         paths = []
         for func_info in termrun.runnable_funcs_registry:
             paths.append(
-                (func_info.path_from_pwd / func_info.get_func_module_name(), func_info)
+                (func_info.path_from_cwd / func_info.get_func_module_name(), func_info)
             )
         tree = self.create_file_tree(paths)
         return tree
@@ -31,6 +33,8 @@ class BaseRunnerMenuFsm:
                     current_level[part] = [] if i == len(path.parts) - 1 else {}
                 current_level = current_level[part]
             current_level.append(func)
+
+        logging.info(f"Loaded modules: \n{pformat(tree, indent=2)}")
         return tree
 
     def draw(self) -> bool:
@@ -71,7 +75,7 @@ class CliMenu(BaseRunnerMenuFsm):
         return type(node) is list
 
     def select(self, node):
-        print("0. Return")
+        print(f"0. {'Exit' if len(self.nodes) == 1 else 'Return'}")
         for i, d in enumerate(node if self.is_leaf(node) else list(node.keys())):
             if self.is_leaf(node):
                 print(f"{i + 1}. [blue]{d.text}[/blue]")

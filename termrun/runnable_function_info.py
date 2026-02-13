@@ -3,10 +3,10 @@ from typing import List
 
 
 class RunnableFunctionInfo:
-    def __init__(self, func, text, path_from_pwd):
+    def __init__(self, func, text, path_from_cwd):
         self.func = func
         self.text = text
-        self.path_from_pwd = path_from_pwd
+        self.path_from_cwd = path_from_cwd
 
     def get_func_name(self):
         return self.func.__name__

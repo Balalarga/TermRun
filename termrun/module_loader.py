@@ -1,17 +1,21 @@
 import importlib.util
 import logging
+import os
 import pathlib
 import sys
 import typing
 
 
 def load_all_modules_from(modules_dir: pathlib.Path) -> typing.Dict[str, pathlib.Path]:
+    modules_dir = modules_dir.absolute()
     if not modules_dir.exists():
-        raise FileNotFoundError(f"Directory '{modules_dir.absolute()}' with scripts does not exist!")
+        raise FileNotFoundError(f"Directory '{modules_dir}' with scripts does not exist!")
 
+    old_cwd = os.getcwd()
+    os.chdir(modules_dir)
     loaded_modules = dict()
 
-    files = modules_dir.rglob("*.py")
+    files = modules_dir.absolute().rglob("*.py")
     for file in files:
         module = load_module(file)
         if module is None:
@@ -22,6 +26,8 @@ def load_all_modules_from(modules_dir: pathlib.Path) -> typing.Dict[str, pathlib
         if existing_module:
             raise Exception(f"Duplicate file names\n\t{file}\n\t{existing_module}")
         loaded_modules[module.__name__] = file
+
+    os.chdir(old_cwd)
     return loaded_modules
 
 
