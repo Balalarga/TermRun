@@ -7,7 +7,10 @@ Simple tasks runner tool with TUI. Supports hierarchical task placement based on
 * [Rich](https://github.com/Textualize/rich) - advanced terminal formatting
 
 # TODO
-* Replace '_' to ' ' in UI
-* Use commentaries inside UI for clear task naming
+## UI
+* Tasks sorting
+* Replace '_' to ' '
+* Use commentaries for clear task naming
+## Common
 * Help menu
 * Vim motions (hotkeys in general)
